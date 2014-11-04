@@ -1,72 +1,61 @@
+(function () {
 
-(function(){
+  App.Views.FeelingsView = Backbone.View.extend({
 
-App.Views.FeelingsView = Backbone.View.extend({
-  //el: '#feels'
+    tagName: 'ul',
+    className: 'feels',
 
-  tagName: 'ul',
-  className: 'feels',
+    events: {
+      'click li' : 'deleteMyFeel'
+    },
 
-  events: {
-    "click li" : "deleteMyFeel"
-  },
+    initialize: function () {
 
-  initialize: function(){
-    //console.log('inited')
-    this.render();
-    App.all_feelings.on('snyc', this.render, this);
-  },
+      this.render();
 
-  render: function(){
-  //  console.log(col);
+      App.all_feelings.on('sync', this.render, this);
+      App.all_feelings.on('destroy', this.render, this);
 
-    //binding 'this' to 'self' for use in nested functions/callbacks
-    var self = this;
+    },
 
-    //regular underscore templates
-    var template = $('#feels').html();
-    var rendered = _.template(template);
+    render: function () {
+      // Binding `this` to `self` for use in
+      // nested functions/callbacks
+      var self = this;
 
-    //Clears out our element
-    this.$el.empty();
+      // Straight up Underscore Template Goodness
+      var template = $('#feels').html();
+      var rendered = _.template(template);
 
-    //iterating over our models
-    _.each(App.all_feelings.models, function(c){
-    //  console.log(c.get('title'));
+      // Clear our El
+      this.$el.empty();
 
-      //each iteration we are appending the data to our el that
-      //backbone created
-      self.$el.append(rendered(c.attributes));
-    });
+      // Iterating over our models
+      _.each(App.all_feelings.models, function (c) {
+          // Each iteration... appending the data
+          // to our element that Backbone created
+          self.$el.append(rendered(c.attributes));
+      });
 
-    $('#feelsContainer').html(this.el);
+      // Take the data and append it into a specific element
+      // on my page
+      $('#feelsContainer').html(this.el);
 
-    //console.log(this.el);
-    return this;
-  },
+      return this;
+    },
 
-  deleteMyFeel: function(e){
-    e.preventDefault();
+    deleteMyFeel: function (e) {
 
-    //Normally in a jquery event use $(this)
-    //In backbone use $(e.target)
+      e.preventDefault();
 
-    var id = $(e.target).attr('id');
+      var id = $(e.target).attr('id');
 
-    //var goodbye = _.findWhere(App.all_feelings.models, { _id: id });
-    var goodbye = App.all_feelings.get(id);
+      var goodbye = App.all_feelings.get(id);
 
-    goodbye.destroy();
+      goodbye.destroy();
 
+    }
 
-    console.log(goodbye);
-
-    //check which feel it is
-    //Find that feel in our collection
-    //Delete that feel
-    //and maybe remove it from our collection
-
-  }
-});
+  });
 
 }());
