@@ -1,5 +1,6 @@
+(function(){
 
-var Feeling = Backbone.Model.extend({
+App.Models.Feeling = Backbone.Model.extend({
 
   defaults: {
     title: '',
@@ -14,3 +15,5 @@ var Feeling = Backbone.Model.extend({
   //  console.log(feel + ' have been created');
   }
 });
+
+}());
